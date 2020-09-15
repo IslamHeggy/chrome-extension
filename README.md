@@ -20,6 +20,13 @@ Objective: Create a chrome-extension that intercepts browser upload/downloads an
 
 <br><img src="./img/chrome-extension.png" alt="Architecture" width="650"/><br>
 
+## Look and Feel
+
+This is how it looks when added to Chrome
+
+<br><img src="./img/in_action.png" alt="Architecture" width="650"/><br>
+
+
 ## Coding Guideline
 
 These are the coding guidelines we tend to follow for Python projects at Glasswall
