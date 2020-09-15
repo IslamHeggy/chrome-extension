@@ -18,7 +18,7 @@ Objective: Create a chrome-extension that intercepts browser upload/downloads an
 
 ## High Level Architecture
 
-<br><img src="./img/chrome-extension.png" alt="Example Formatting" width="650"/><br>
+<br><img src="./img/chrome-extension.png" alt="Architecture" width="650"/><br>
 
 ## Coding Guideline
 
