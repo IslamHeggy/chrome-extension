@@ -6,102 +6,11 @@
 <script>
 "use strict";
 
-function ajaxSuccess () {
-  console.log(this.responseText);
-}
-
-function AJAXSubmit () {
-  var x = document.getElementById("fileInput");
-  var txt = "";
-  if ('files' in x) {
-    if (x.files.length == 0) {
-      txt = "Select one or more files.";
-    } else {
-      for (var i = 0; i < x.files.length; i++) {
-        txt += "<br><strong>" + (i+1) + ". file</strong><br>";
-        var file = x.files[i];
-        if ('name' in file) {
-          txt += "name: " + file.name + "<br>";
-        }
-        if ('size' in file) {
-          txt += "size: " + file.size + " bytes <br>";
-        }
-      }
-    }
-  }
-
-
-  var formData = new FormData();
-  var fileInputElement = document.getElementById("fileInput");
-   /*var reader = new FileReader();
-    reader.onload = function(e) {
-        // binary data
-        console.log("Reader ready "+e.target.result);
-    };
-    reader.onerror = function(e) {
-        // error occurred
-        console.log('Reader Error : ' + e.type);
-    };*/
-    console.log("File data "+JSON.stringify(fileInputElement.files[0]));
-    var theFile = fileInputElement.files[0].path;
-    console.log('theFile = '+theFile)
-    //var fileData = reader.readAsBinaryString(theFile);
-    var fileData = load_binary_resource(theFile);
-    console.log('fileData = '+fileData)
-  formData.append("file", fileData,theFile.name);
-  var request = new XMLHttpRequest();
-  request.open("POST", "/upload");
-  request.send(formData);
-}
-
-function load_binary_resource(url) {
-  var byteArray = [];
-  var req = new XMLHttpRequest();
-  req.open('GET', url, false);
-  req.overrideMimeType('text\/plain; charset=x-user-defined');
-  req.send(null);
-  if (req.status != 200) return byteArray;
-  for (var i = 0; i < req.responseText.length; ++i) {
-    byteArray.push(req.responseText.charCodeAt(i) & 0xff)
-  }
-  return byteArray;
-}
-
-function myFunction(){
-  var x = document.getElementById("myFile");
-  var txt = "";
-  if ('files' in x) {
-    if (x.files.length == 0) {
-      txt = "Select one or more files.";
-    } else {
-      for (var i = 0; i < x.files.length; i++) {
-        txt += "<br><strong>" + (i+1) + ". file</strong><br>";
-        var file = x.files[i];
-        console.log('file data ='+JSON.stringify(file));
-        if ('name' in file) {
-          txt += "name: " + file.name + "<br>";
-        }
-        if ('size' in file) {
-          txt += "size: " + file.size + " bytes <br>";
-        }
-      }
-    }
-  }
-  else {
-    if (x.value == "") {
-      txt += "Select one or more files.";
-    } else {
-      txt += "The files property is not supported by your browser!";
-      txt  += "<br>The path of the selected file: " + x.value; // If the browser does not support the files property, it will return the path of the selected file instead.
-    }
-  }
-  console.log(txt);
-}
 
 var fr;
 var fileName;
 
-function myFunction1(){
+function uploadFiles(){
 	event.preventDefault();
 	console.log('<handleFileSelect> IN ');
 	if (!window.File || !window.FileReader || !window.FileList || !window.Blob) {
@@ -133,7 +42,7 @@ function myFunction1(){
 
 		console.log('fn_id_mediaile = '+pan_id_media);
 		fr = new FileReader();
-		fr.onload = galleryFileLoaded;
+		fr.onload = FileLoaded;
 		fr.onloadstart = function(e) {
 		}
 		fr.readAsDataURL(file);
@@ -143,7 +52,7 @@ function myFunction1(){
 
 }
 
-function galleryFileLoaded(){
+function FileLoaded(){
 	var arrayBuffer = fr.result;
 	var base64Data  = arrayBuffer;
 	var commaIndex =  arrayBuffer.indexOf(',');
@@ -170,11 +79,8 @@ function galleryFileLoaded(){
     <legend>Upload example</legend>
     <p>
       Post your files:
-        <input type="file" id="pan_id_media" multiple size="50" onchange="myFunction1()">
-      <!--<input type="file" name="file" id="fileInput" onchange="AJAXSubmit()">-->
+        <input type="file" id="pan_id_media" multiple size="50" onchange="uploadFiles()">
     </p>
-    <!--<p>
-      <input type="submit" value="Submit" />
     </p>-->
   </fieldset>
 </form>
