@@ -52,48 +52,6 @@ chrome.webRequest.onBeforeRequest.addListener(
         ["requestBody","extraHeaders"]);
 
 
-/*chrome.webRequest.onBeforeSendHeaders.addListener(
-        function(details) {
-        if(isRebuildRequest(details) == true){
-            return;
-        }
-        var initiator               = details.initiator;
-        if(initiator != null && initiator.indexOf("localhost:8080") > -1 ){
-          console.log('Header Details '+JSON.stringify(details))
-          }
-          for (var i = 0; i < details.requestHeaders.length; ++i) {
-            if (details.requestHeaders[i].name === 'Content-Type') {
-              var contentType = details.requestHeaders[i].value;
-              if(contentType.indexOf("multipart/form-data") > -1){
-                fileContentType = contentType;
-                console.log('============= Header Captured ==================');
-                console.log('fileRequestName = '+fileRequestName);
-                console.log('fileRequestBody = '+fileRequestBody);
-                console.log('originalUrl = '+originalUrl);
-                console.log('originalMethod = '+originalMethod);
-                console.log('originalType = '+originalType);
-                console.log('============= End Header ==================');
-                if(originalUrl !== null && fileRequestBody != null && fileRequestName != null && originalMethod != null){
-                    // Needs rebuild
-                const data      = JSON.stringify({
-                                        Base64: fileRequestBody
-                                    });
-                const headers = {
-                    'Content-Type'  : 'application/json',
-                    'x-api-key'     : REBUILD_API_KEY
-                }
-                console.log('data - '+data)
-                sendHttpRequestAsync(REBUILD_URL,'POST',data,rebuildCallback)
-                }
-              }
-              break;
-            }
-          }
-        },
-        {urls: ["<all_urls>"]},
-        ["blocking", "requestHeaders"]);
-
-*/
 
 function rebuildCallback(statusAndResponse){
     console.log('Rebuilt response status - '+statusAndResponse[0])

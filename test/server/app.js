@@ -9,7 +9,8 @@ var indexRouter = require('./routes/index');
 var filesRouter = require('./routes/files');
 var fs = require('fs');
 
-const UPLOAD_PATH = "D:\\tmp\\demo\\samples\\cleaned-by-extension-on-server\\";
+// To be filled by user where he wants to save dummy uploaded files
+const UPLOAD_PATH = "";
 
 var app = express();
 
