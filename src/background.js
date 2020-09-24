@@ -6,7 +6,7 @@ var originalMethod      = null;
 var originalType        = null;
 var originalRequest     = null;
 const REBUILD_URL       = 'https://8oiyjy8w63.execute-api.us-west-2.amazonaws.com/Prod/api/rebuild/base64';
-const REBUILD_API_KEY   = 'dp2Ug1jtEh4xxFHpJBfWn9V7fKB3yVcv60lhwOAG';
+const REBUILD_API_KEY   = '';
 var inProcess           = false;
 
 chrome.webRequest.onBeforeRequest.addListener(
