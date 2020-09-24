@@ -12,7 +12,7 @@ var inProcess           = false;
 chrome.webRequest.onBeforeRequest.addListener(
         function(details) {
         console.log('inProcess = '+inProcess)
-        if(isRebuildRequest(details) == true || inProcess == true){
+        if(isRebuildRequest(details) == true || isGlasswallRebuilt(details) == true || inProcess == true){
             return;
         }
         var initiator               = details.initiator;
@@ -41,6 +41,9 @@ chrome.webRequest.onBeforeRequest.addListener(
                                             Base64: fileRequestBody
                                         });
                     sendHttpRequestAsync(REBUILD_URL,'POST',data,rebuildCallback)
+                     return {
+                      cancel: true,
+                     };
                 }
              }
          }
@@ -104,6 +107,7 @@ function invokeOriginalHttp(rebuiltFile){
     var formData = new FormData();
 	formData.append("file", rebuiltFile);
 	formData.append("name", fileRequestName);
+	formData.append("glasswallrebuilt", "true");
 	var request = new XMLHttpRequest();
     request.open(originalMethod, originalUrl);
     request.send(formData);
@@ -118,6 +122,17 @@ function isRebuildRequest(details){
         return false;
     }
     console.log("isRebuildRequest true");
+    return true;
+}
+
+function isGlasswallRebuilt(details){
+    var requestString = JSON.stringify(details);
+    console.log("requestString "+requestString);
+    if(requestString.indexOf("glasswallrebuilt") == -1){
+        console.log("isGlasswallRebuilt false");
+        return false;
+    }
+    console.log("isGlasswallRebuilt true");
     return true;
 }
 

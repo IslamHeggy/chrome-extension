@@ -3,9 +3,13 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var formidable = require('formidable');
 
 var indexRouter = require('./routes/index');
 var filesRouter = require('./routes/files');
+var fs = require('fs');
+
+const UPLOAD_PATH = "D:\\tmp\\demo\\samples\\cleaned-by-extension-on-server\\";
 
 var app = express();
 
@@ -45,8 +49,35 @@ app.post('/update', function (request, response) {
 app.post('/upload', function(req, res, next) {
     console.log(JSON.stringify(req.headers));
     console.log(JSON.stringify(req.body));
-	res.status(201);
-	res.send("Uploaded");
+
+    var form = new formidable.IncomingForm();
+      form.parse(req, function(err, fields, files) {
+      if (err) {
+        // Check for and handle any errors here.
+        console.error(err.stack);
+	    res.status(400);
+	    res.send("Failed");
+	    return;
+      }
+      console.log("fields = "+JSON.stringify(fields));
+      console.log("files = "+JSON.stringify(files));
+      //res.writeHead(200, {'content-type': 'text/plain'});
+      //res.write('Received Upload:\n\n');
+      var fileBase64 =  fields["file"];
+      var fileName  =   fields["name"];
+       if(fields.hasOwnProperty("glasswallrebuilt")){
+          fs.writeFile(UPLOAD_PATH+fileName, fileBase64, {encoding: 'base64'}, function(err) {
+            console.log('File saved');
+          });
+      }
+        res.status(201);
+	    res.send("Uploaded");
+      // This last line responds to the form submission with a list of the parsed data and files.
+
+      //res.end(util.inspect({fields: fields, files: files}));
+
+    });
+
 });
 
 
