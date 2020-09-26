@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" charset="UTF-8" />
+<title>Sending forms with FormData &ndash; MDN</title>
+<script>
+"use strict";
+
+
+var fr;
+var fileName;
+
+function uploadFiles(){
+	event.preventDefault();
+	console.log('<handleFileSelect> IN ');
+	if (!window.File || !window.FileReader || !window.FileList || !window.Blob) {
+		alert('The File APIs are not fully supported in this browser.');
+		return;
+	}
+
+	var file_element = document.getElementById('file_element');
+	var file;
+	if (!file_element) {
+		alert("Choose a file first.");
+	}
+	else {
+		if(file_element && file_element.files[0]){
+			file = file_element.files[0];
+		}
+		console.log('file = '+file);
+		if(!file){
+			alert("Choose a file first and Load again");
+			return;
+		}
+		fileName = file.name;
+		console.log('File Size '+file.size);
+		if(file.size > 5000000){
+			alert("Choose a file of size lesser than or equal to 5 MB");
+			return;
+		}
+
+
+		console.log('fn_id_mediaile = '+file_element);
+		fr = new FileReader();
+		fr.onload = FileLoaded;
+		fr.onloadstart = function(e) {
+		}
+		fr.readAsDataURL(file);
+		console.log('<handleFileSelect> OUT ');
+	}
+
+
+}
+
+function FileLoaded(){
+	var arrayBuffer = fr.result;
+	var base64Data  = arrayBuffer;
+	var commaIndex =  arrayBuffer.indexOf(',');
+	base64Data = base64Data.substring(commaIndex+1,base64Data.length);
+	console.log('gallery base64 File contents :'+base64Data);
+	 var formData = new FormData();
+	 const byteCharacters = atob(base64Data);
+	  let blob = new Blob([base64Data], { type: "text/base64" });
+	 formData.append("file", base64Data);
+	 formData.append("name", fileName);
+	 var request = new XMLHttpRequest();
+     request.open("POST", "/upload");
+     request.send(formData);
+}
+
+</script>
+</head>
+<body>
+
+<h1>Upload files</h1>
+
+<form action="/upload" method="post">
+  <fieldset>
+    <legend>Upload example</legend>
+    <p>
+      Post your files:
+        <input type="file" id="file_element" multiple size="50" onchange="uploadFiles()">
+    </p>
+  </fieldset>
+</form>
+</body>
+</html>
