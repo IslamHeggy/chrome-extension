@@ -27,6 +27,35 @@ This is how it looks when added to Chrome
 <br><img src="./img/in_action.png" alt="Architecture" width="650"/><br>
 
 
+## Build Backend Docker Image
+
+A docker image is created for the backend server responsible for the manual upload to make the process easier for testing, As you need to install node on your host to test.
+
+You need only docker installed.
+
+Clone the repo 
+```
+$ git clone https://github.com/k8-proxy/chrome-extension 
+```
+Change your current directory
+```
+$ cd chrome-extension/test/server
+
+```
+Build the docker container
+```
+$ docker build repo-name/name:tag . 
+
+```
+
+run the container
+```
+$ docker run -p 8080:8080 repo-name/name:tag
+
+```
+
+You will find the application running on port 8080
+
 ## Coding Guideline
 
 These are the coding guidelines we tend to follow for Python projects at Glasswall
