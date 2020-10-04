@@ -48,9 +48,15 @@ $ docker build repo-name/name:tag .
 
 ```
 
-run the container
+Run the container
 ```
 $ docker run -p 8080:8080 repo-name/name:tag
+
+```
+
+Or you can build and run the container using docker compose 
+```
+$ docker-compose up -d 
 
 ```
 
