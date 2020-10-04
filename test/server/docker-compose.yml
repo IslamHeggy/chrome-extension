@@ -1,0 +1,11 @@
+version: '3.7'
+
+services:
+  squid:
+    build: .
+    image: chrome-extension
+    ports:
+      - "8081:8080"
+        #    network_mode: host
+    restart: always
+
